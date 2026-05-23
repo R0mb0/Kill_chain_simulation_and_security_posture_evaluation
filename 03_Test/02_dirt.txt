@@ -1,0 +1,141 @@
+dirb http://192.168.100.20/
+
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
+
+START_TIME: Sat May 23 10:53:25 2026
+URL_BASE: http://192.168.100.20/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+-----------------
+
+                                                                             GENERATED WORDS: 4612
+
+---- Scanning URL: http://192.168.100.20/ ----
+                                                                             + http://192.168.100.20/cgi-bin/ (CODE:403|SIZE:295)                        
+                                                                             ==> DIRECTORY: http://192.168.100.20/dav/
++ http://192.168.100.20/index (CODE:200|SIZE:891)                           
++ http://192.168.100.20/index.php (CODE:200|SIZE:891)                       
++ http://192.168.100.20/phpinfo (CODE:200|SIZE:48092)                       
++ http://192.168.100.20/phpinfo.php (CODE:200|SIZE:48104)                   
+                                                                             ==> DIRECTORY: http://192.168.100.20/phpMyAdmin/
++ http://192.168.100.20/server-status (CODE:403|SIZE:300)                   
+                                                                             ==> DIRECTORY: http://192.168.100.20/test/
+                                                                             ==> DIRECTORY: http://192.168.100.20/twiki/
+                                                                            
+---- Entering directory: http://192.168.100.20/dav/ ----
+                                                                             (!) WARNING: Directory IS LISTABLE. No need to scan it.
+    (Use mode '-w' if you want to scan it anyway)
+                                                                            
+---- Entering directory: http://192.168.100.20/phpMyAdmin/ ----
+                                                                             + http://192.168.100.20/phpMyAdmin/calendar (CODE:200|SIZE:4145)            
++ http://192.168.100.20/phpMyAdmin/changelog (CODE:200|SIZE:74593)          
++ http://192.168.100.20/phpMyAdmin/ChangeLog (CODE:200|SIZE:40540)          
+                                                                             ==> DIRECTORY: http://192.168.100.20/phpMyAdmin/contrib/
++ http://192.168.100.20/phpMyAdmin/docs (CODE:200|SIZE:4583)                
++ http://192.168.100.20/phpMyAdmin/error (CODE:200|SIZE:1063)               
++ http://192.168.100.20/phpMyAdmin/export (CODE:200|SIZE:4145)              
++ http://192.168.100.20/phpMyAdmin/favicon.ico (CODE:200|SIZE:18902)        
++ http://192.168.100.20/phpMyAdmin/import (CODE:200|SIZE:4145)              
++ http://192.168.100.20/phpMyAdmin/index (CODE:200|SIZE:4145)               
++ http://192.168.100.20/phpMyAdmin/index.php (CODE:200|SIZE:4145)           
+                                                                             ==> DIRECTORY: http://192.168.100.20/phpMyAdmin/js/
+                                                                             ==> DIRECTORY: http://192.168.100.20/phpMyAdmin/lang/
+                                                                             ==> DIRECTORY: http://192.168.100.20/phpMyAdmin/libraries/
++ http://192.168.100.20/phpMyAdmin/license (CODE:200|SIZE:18011)            
++ http://192.168.100.20/phpMyAdmin/LICENSE (CODE:200|SIZE:18011)            
++ http://192.168.100.20/phpMyAdmin/main (CODE:200|SIZE:4227)                
++ http://192.168.100.20/phpMyAdmin/navigation (CODE:200|SIZE:4145)          
++ http://192.168.100.20/phpMyAdmin/phpinfo (CODE:200|SIZE:0)                
++ http://192.168.100.20/phpMyAdmin/phpinfo.php (CODE:200|SIZE:0)            
++ http://192.168.100.20/phpMyAdmin/phpmyadmin (CODE:200|SIZE:21389)         
++ http://192.168.100.20/phpMyAdmin/print (CODE:200|SIZE:1063)               
++ http://192.168.100.20/phpMyAdmin/readme (CODE:200|SIZE:2624)              
++ http://192.168.100.20/phpMyAdmin/README (CODE:200|SIZE:2624)              
++ http://192.168.100.20/phpMyAdmin/robots (CODE:200|SIZE:26)                
++ http://192.168.100.20/phpMyAdmin/robots.txt (CODE:200|SIZE:26)            
+                                                                             ==> DIRECTORY: http://192.168.100.20/phpMyAdmin/scripts/
+                                                                             ==> DIRECTORY: http://192.168.100.20/phpMyAdmin/setup/
++ http://192.168.100.20/phpMyAdmin/sql (CODE:200|SIZE:4145)                 
+                                                                             ==> DIRECTORY: http://192.168.100.20/phpMyAdmin/test/
+                                                                             ==> DIRECTORY: http://192.168.100.20/phpMyAdmin/themes/
++ http://192.168.100.20/phpMyAdmin/TODO (CODE:200|SIZE:235)                 
++ http://192.168.100.20/phpMyAdmin/webapp (CODE:200|SIZE:6902)              
+                                                                            
+---- Entering directory: http://192.168.100.20/test/ ----
+                                                                             (!) WARNING: Directory IS LISTABLE. No need to scan it.
+    (Use mode '-w' if you want to scan it anyway)
+                                                                            
+---- Entering directory: http://192.168.100.20/twiki/ ----
+                                                                                                                                                          ==> DIRECTORY: http://192.168.100.20/twiki/bin/
++ http://192.168.100.20/twiki/data (CODE:403|SIZE:297)                      
++ http://192.168.100.20/twiki/index (CODE:200|SIZE:782)                     
++ http://192.168.100.20/twiki/index.html (CODE:200|SIZE:782)                
+                                                                             ==> DIRECTORY: http://192.168.100.20/twiki/lib/
++ http://192.168.100.20/twiki/license (CODE:200|SIZE:19440)                 
+                                                                             ==> DIRECTORY: http://192.168.100.20/twiki/pub/
++ http://192.168.100.20/twiki/readme (CODE:200|SIZE:4334)                   
++ http://192.168.100.20/twiki/templates (CODE:403|SIZE:302)                 
+                                                                            
+---- Entering directory: http://192.168.100.20/phpMyAdmin/contrib/ ----
+                                                                             (!) WARNING: Directory IS LISTABLE. No need to scan it.
+    (Use mode '-w' if you want to scan it anyway)
+                                                                            
+---- Entering directory: http://192.168.100.20/phpMyAdmin/js/ ----
+                                                                             (!) WARNING: Directory IS LISTABLE. No need to scan it.
+    (Use mode '-w' if you want to scan it anyway)
+                                                                            
+---- Entering directory: http://192.168.100.20/phpMyAdmin/lang/ ----
+                                                                             (!) WARNING: Directory IS LISTABLE. No need to scan it.
+    (Use mode '-w' if you want to scan it anyway)
+                                                                            
+---- Entering directory: http://192.168.100.20/phpMyAdmin/libraries/ ----
+                                                                             (!) WARNING: Directory IS LISTABLE. No need to scan it.
+    (Use mode '-w' if you want to scan it anyway)
+                                                                            
+---- Entering directory: http://192.168.100.20/phpMyAdmin/scripts/ ----
+                                                                             (!) WARNING: Directory IS LISTABLE. No need to scan it.
+    (Use mode '-w' if you want to scan it anyway)
+                                                                            
+---- Entering directory: http://192.168.100.20/phpMyAdmin/setup/ ----
+                                                                             + http://192.168.100.20/phpMyAdmin/setup/config (CODE:303|SIZE:1370)        
+                                                                             ==> DIRECTORY: http://192.168.100.20/phpMyAdmin/setup/frames/
++ http://192.168.100.20/phpMyAdmin/setup/index (CODE:200|SIZE:8618)         
++ http://192.168.100.20/phpMyAdmin/setup/index.php (CODE:200|SIZE:8626)     
+                                                                             ==> DIRECTORY: http://192.168.100.20/phpMyAdmin/setup/lib/
++ http://192.168.100.20/phpMyAdmin/setup/scripts (CODE:200|SIZE:21967)      
++ http://192.168.100.20/phpMyAdmin/setup/styles (CODE:200|SIZE:6218)        
+                                                                            
+---- Entering directory: http://192.168.100.20/phpMyAdmin/test/ ----
+                                                                             (!) WARNING: Directory IS LISTABLE. No need to scan it.
+    (Use mode '-w' if you want to scan it anyway)
+                                                                            
+---- Entering directory: http://192.168.100.20/phpMyAdmin/themes/ ----
+                                                                             (!) WARNING: Directory IS LISTABLE. No need to scan it.
+    (Use mode '-w' if you want to scan it anyway)
+                                                                            
+---- Entering directory: http://192.168.100.20/twiki/bin/ ----
+                                                                             (!) WARNING: Directory IS LISTABLE. No need to scan it.
+    (Use mode '-w' if you want to scan it anyway)
+                                                                            
+---- Entering directory: http://192.168.100.20/twiki/lib/ ----
+                                                                             (!) WARNING: Directory IS LISTABLE. No need to scan it.
+    (Use mode '-w' if you want to scan it anyway)
+                                                                            
+---- Entering directory: http://192.168.100.20/twiki/pub/ ----
+                                                                             (!) WARNING: Directory IS LISTABLE. No need to scan it.
+    (Use mode '-w' if you want to scan it anyway)
+                                                                            
+---- Entering directory: http://192.168.100.20/phpMyAdmin/setup/frames/ ----
+                                                                             (!) WARNING: Directory IS LISTABLE. No need to scan it.
+    (Use mode '-w' if you want to scan it anyway)
+                                                                            
+---- Entering directory: http://192.168.100.20/phpMyAdmin/setup/lib/ ----
+                                                                             (!) WARNING: Directory IS LISTABLE. No need to scan it.
+    (Use mode '-w' if you want to scan it anyway)
+                                                                               
+-----------------
+END_TIME: Sat May 23 10:54:15 2026
+DOWNLOADED: 18448 - FOUND: 42
