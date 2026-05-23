@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Setup and Network Topology Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fcfcfc;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+            background-color: #f4f8fb;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+        }
+        pre {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .callout {
+            background-color: #e8f4f8;
+            border-left: 4px solid #2980b9;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .warning {
+            background-color: #fdf3f2;
+            border-left: 4px solid #e74c3c;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Phase 1: Lab Setup and Network Topology Documentation</h1>
+    
+    <div class="callout">
+        <strong>Project Context:</strong> Penetration Testing and Security Posture Evaluation Laboratory. <br>
+        <strong>Objective:</strong> Establish a safely isolated virtual environment to simulate a Cyber Kill Chain without affecting external networks or host systems.
+    </div>
+
+    <h2>1. VirtualBox Internal Network Configuration</h2>
+    <p>To ensure strict isolation, the laboratory relies on VirtualBox's <strong>Internal Network</strong> feature. This isolates the virtual machines from the host operating system and the internet.</p>
+    
+    <ul>
+        <li><strong>Hypervisor:</strong> Oracle VM VirtualBox</li>
+        <li><strong>Network Mode:</strong> Internal Network</li>
+        <li><strong>Network Name:</strong> <code>LabSicurezza</code></li>
+    </ul>
+
+    <h2>2. IP Addressing Plan</h2>
+    <p>A static IP addressing scheme was defined for the `192.168.100.0/24` subnet to ensure stable communication between the attacking node and the vulnerable target.</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Machine Role</th>
+                <th>Operating System</th>
+                <th>IP Address</th>
+                <th>Subnet Mask</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Attacker Node</strong></td>
+                <td>Kali Linux</td>
+                <td>192.168.100.10</td>
+                <td>255.255.255.0</td>
+            </tr>
+            <tr>
+                <td><strong>Victim Node</strong></td>
+                <td>Metasploitable 2</td>
+                <td>192.168.100.20</td>
+                <td>255.255.255.0</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>3. Assigning Static IP to Metasploitable 2 (Victim)</h2>
+    <p>The target machine requires a static IP assignment through its network interfaces file.</p>
+    
+    <ol>
+        <li>Boot Metasploitable 2 and log in (default credentials: <code>msfadmin:msfadmin</code>).</li>
+        <li>Open the network interfaces configuration file:
+            <pre>sudo nano /etc/network/interfaces</pre>
+        </li>
+        <li>Modify the <code>eth0</code> configuration to apply the static IP:
+<pre>auto eth0
+iface eth0 inet static
+address 192.168.100.20
+netmask 255.255.255.0</pre>
+        </li>
+        <li>Save the file and restart the networking service to apply changes:
+            <pre>sudo /etc/init.d/networking restart</pre>
+        </li>
+    </ol>
+
+    <h2>4. Assigning Static IP to Kali Linux (Attacker)</h2>
+    <p>The attacking machine is configured via the Network Manager GUI (or CLI) to reside on the same subnet.</p>
+    
+    <ol>
+        <li>Boot Kali Linux and navigate to the Network Manager (top-right corner) &rarr; <strong>Edit Connections</strong>.</li>
+        <li>Select the active wired connection and open its settings.</li>
+        <li>Under the <strong>IPv4 Settings</strong> tab, change the method from <code>Automatic (DHCP)</code> to <code>Manual</code>.</li>
+        <li>Add the following configuration:
+            <ul>
+                <li><strong>Address:</strong> <code>192.168.100.10</code></li>
+                <li><strong>Netmask:</strong> <code>255.255.255.0</code></li>
+                <li><strong>Gateway:</strong> <em>(Leave blank to enforce isolation)</em></li>
+            </ul>
+        </li>
+        <li>Save the settings and reconnect the network interface.</li>
+    </ol>
+
+    <h2>5. Connectivity and Isolation Verification</h2>
+    <p>To ensure the laboratory is correctly set up and securely isolated, reachability tests must be performed from the Attacker Node.</p>
+    
+    <p><strong>1. Verify Internal Reachability:</strong> Ping the Victim Node.</p>
+    <pre>ping -c 4 192.168.100.20</pre>
+    <p><em>Expected outcome:</em> Successful ICMP echo replies, confirming the internal network is functional.</p>
+
+    <div class="callout warning">
+        <strong>2. Verify External Isolation:</strong> Ping an external public server (e.g., Google DNS).
+        <pre>ping -c 4 8.8.8.8</pre>
+        <em>Expected outcome:</em> "Network is unreachable" or 100% packet loss. This confirms the environment is safely contained and cannot leak traffic to the internet.
+    </div>
+
+</body>
+</html>

@@ -2,3 +2,8 @@
 01_Requirements/01_Kali_Linux/kali-linux-2026.1-virtualbox-amd64.7z
 /01_Requirements/01_Kali_Linux/kali-linux-2026.1-virtualbox-amd64
 01_Requirements/02_Metasploitable/metasploitable-linux-2.0.0.zip
+01_Requirements/02_Metasploitable/Metasploitable2-Linux/Metasploitable.nvram
+*.vmdk
+*.vmsd
+*.vmx
+*.vmxf
