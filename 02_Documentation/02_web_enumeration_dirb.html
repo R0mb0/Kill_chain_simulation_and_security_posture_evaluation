@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 3.2: Web Enumeration via DIRB</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #fcfcfc; }
+        h1, h2, h3 { color: #2c3e50; }
+        h1 { border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { margin-top: 30px; border-left: 4px solid #3498db; padding-left: 10px; background-color: #f4f8fb; }
+        pre { background-color: #272822; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; font-family: 'Courier New', Courier, monospace; font-size: 0.9em; }
+        .callout { background-color: #e8f4f8; border-left: 4px solid #2980b9; padding: 15px; margin: 20px 0; border-radius: 0 4px 4px 0; }
+        .todo { background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>Phase 3.2: Web Enumeration via DIRB</h1>
+    <div class="callout">
+        <strong>Objective:</strong> Map the directory structure of the target web server (Port 80) to uncover hidden paths, administrative panels, and vulnerable applications (e.g., DVWA, Mutillidae).
+    </div>
+
+    <h2>1. Methodology</h2>
+    <p>Following the discovery of the Apache web server, a directory busting tool (DIRB) was utilized to brute-force web paths using a predefined wordlist.</p>
+    <p>The following command was executed on the Kali Linux machine:</p>
+    <pre>dirb http://192.168.100.20/</pre>
+
+    <h2>2. Expected Directories of Interest</h2>
+    <p>We are specifically looking for the following endpoints to proceed with the Web Application Exploitation phase:</p>
+    <ul>
+        <li><code>/dvwa/</code> - Damn Vulnerable Web App (Primary target)</li>
+        <li><code>/mutillidae/</code> - OWASP Mutillidae II</li>
+        <li><code>/phpMyAdmin/</code> - Database administration interface</li>
+    </ul>
+
+    <h2>3. Enumeration Results</h2>
+    <div class="todo">
+        <strong>Note for Repository:</strong> <em>[Paste the final output results of the DIRB scan here once the execution completes in the terminal. Replace this placeholder text with the actual discovered directories.]</em>
+    </div>
+
+</body>
+</html>
